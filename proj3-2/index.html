@@ -1,7 +1,243 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Project 3-2 here
-	</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>  
+    div.padded {  
+      padding-top: 0px;  
+      padding-right: 100px;  
+      padding-bottom: 0.25in;  
+      padding-left: 100px;  
+    }  
+  </style> 
+<title>Prannay Pradeep and Shaamer Kumar  |  CS 184</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<br />
+<h1 align="middle">Assignment 3-2: Additional Features to PathTracer</h1>
+    <h2 align="middle">Prannay Pradeep and Shaamer Kumar</h2>
+    <h2 align="middle">Website URL: https://cal-cs184-student.github.io/project-webpages-sp23-prannaypradeep999/</h2>
+
+    <div class="padded">
+
+        
+        * NOTE: For this project, you will choose TWO out of the four given parts to complete. One of those parts must be Part 1 or Part 2. In other words, you can choose any combination of two parts except the pair (Part 3, Part 4).
+        <p><b>
+        We have chosen parts 1 and 2 to complete.
+        </b></p>
+
+        <h3 align="middle">Part 1. Mirror and Glass Materials</h3>
+
+        <p><b>
+            Show a sequence of six images of scene `CBspheres.dae` rendered with `max_ray_depth` set to 0, 1, 2, 3, 4, 5, and 100. The other settings should be at least 64 samples per pixel and 4 samples per light. Make sure to include all screenshots.
+        </b></p>
+        <div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/CBspheres_refract.png" align="middle" width="350px"/>
+        <figcaption>Max Ray 0 (CBspheres.dae)</figcaption>
+      </td>
+      <td>
+        <img src="images/CBspheres_refract1.png" align="middle" width="350px"/>
+        <figcaption>Max Ray 1 (CBspheres.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+        <img src="images/CBspheres_refract2.png" align="middle" width="350px"/>
+        <figcaption>Max Ray 2 (CBspheres.dae)</figcaption>
+      </td>
+      <td>
+        <img src="images/CBspheres_refract3.png" align="middle" width="350px"/>
+        <figcaption>Max Ray 3 (CBspheres.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+        <img src="images/CBspheres_refract4.png" align="middle" width="350px"/>
+        <figcaption>Max Ray 4 (CBspheres.dae)</figcaption>
+      </td>
+      <td>
+        <img src="images/CBspheres_refract5.png" align="middle" width="350px"/>
+        <figcaption>Max Ray 5 (CBspheres.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+        <img src="images/CBspheres_refract100.png" align="middle" width="350px"/>
+        <figcaption>Max Ray 100 (CBspheres.dae)</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+        <br>
+        <p><b>
+            Point out the new multibounce effects that appear in each image. 
+        </b></p>
+        <p>
+            Lets go through each of the images and then detail the multibounce effects. 
+
+            In image 1, we have 0 bounces, hence we can only see the light source and no bounces. 
+
+            In the max depth of 1 photo, we see a first bounce. We see the light bounce off the light source to a singular other point and then to our eyes. We see no reflections etc, all we see is the surface of the balls and the walls.
+
+            In the depth of 2 photo, we start to see some more intricate patterns. The glass balls show off reflections where the reflected balls are black (similar to previous image), the walls give off slight color from other walls, and we start to see some general noise
+
+            In the depth 3 photo, the reflective balls are no longer black and we get another layer of bounces where if we zoom in we can see a third level of reflections of black balls (just the surface of the balls like in the depth 1 image). There is more noise in the photo and the shadows are starting to have more color from the reflections. Additionally, we see the concentrated light from refraction at the base of the right ball
+
+            In the depth 4 and 5 photos, we dont see too much visible difference, both add more color from reflections to surfaces and have similar amounts of noise. We see another level of the internal reflection/refraction on the purple wall here with the slight bright spot in the bottom right.
+
+            In the depth 100 photo, we see the shadows have much more color and are seen in the reflections too, the walls are clearly impacting the colors of each other and has the most realistic feel to it.
+        </p>
+        <br>
+        <p><b>
+            Explain how these bounce numbers relate to the particular effects that appear. Make sure to include all screenshots.
+        </b></p>
+        <p>
+            Essentially, as the bounce numbers increase, the more effects appear to a certain extent! for 0, we get no effects, for 1, we get the basic layout of the screen, for 2, we get details on initial reflections and we know that inside the right ball there is internal reflection that has not reached us yet, for 3, we see the internal reflections and how the light from the source gets magnfied and concentrated as well as colors bouncing off walls, for 4 and 5, we see more details with shadows and light patterns as they bounce off walls from the right and left balls. There is no visible difference between 5 and 100, although im sure the 100 level has subtle changes. There is a logistic growth type graph when thinking about bounce numbers to effects.
+        </p>
+        <br>
+
+
+        <h3 align="middle">Part 2. Microfacet Material</h3>
+        <p><b>
+            Show a screenshot sequence of 4 images of scene `CBdragon_microfacet_au.dae` rendered with $\alpha$ set to 0.005, 0.05, 0.25 and 0.5. The other settings should be at least 128 samples per pixel and 1 samples per light. The number of bounces should be at least 5. Describe the differences between different images. Note that, to change the $\alpha$, just open the .dae file and search for `microfacet`.
+        </b></p>
+          <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/CBdragon_microfacet_au_alpha_005.png" align="middle" width="350px"/>
+        <figcaption>alpha = 0.005 (CBdragon_microfacet_au.dae)</figcaption>
+      </td>
+      <td>
+        <img src="images/CBdragon_microfacet_au_alpha_05.png" align="middle" width="350px"/>
+        <figcaption>alpha = 0.05 (CBdragon_microfacet_au.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+        <img src="images/CBdragon_microfacet_au_alpha_25.png" align="middle" width="350px"/>
+        <figcaption>alpha = 0.25 (CBdragon_microfacet_au.dae)</figcaption>
+      </td>
+      <td>
+        <img src="images/CBdragon_microfacet_au_alpha_50.png" align="middle" width="350px"/>
+        <figcaption>alpha = 0.05 (CBdragon_microfacet_au.dae)</figcaption>
+      </td>
+    </tr>
+  </table>
+
+    <p>
+        All our images above were made with a command using 256 samples per pixel, 1 sample per light, and 5 bounces.
+    </p>
+        <p>
+
+            We utilize our alpha, which represents the roughness of the macro surface, is primarially used in our normal distribution function (NDF), MicrofacetBSDF::D(), and our importance sampling function, MicrofacetBSDF::sample_f(). The first image, with the lowest alpha value of 0.005, looks the most glossy and specular (white dots). This is because the roughness value is the lowest, and as a result the image looks less like rough, metal gold, and more shiny to the point where you can almost see other colors reflected in the dragon. The second image, with an alpha value of 0.05, looks slightly less shiny, though the material of the dragon still seems overly glossy and specular. Additionally, we are still able to see many white dots of noise with this alpha value, as we were with alpha = 0.005. As we increase our alpha value another 5x at 0.25, we are able to see the dragon look much more rough and less reflective. Additionally, the gold material of the dragon seems to look more rough and gritty, and the overall image has relatively unnoticable white specs and considerably less noise than the 2 images dicussed previously. Despite this, we still see that our 3rd image still has noticable shine compared to our final image with alpha = 0.05. This final dragon has considerably less gloss than the other 3 alpha images before it, and has relatively unnoticable background noise. The overall color of the final 2 pictures seems to resemble more solid gold than the first 2 images, which have a more reflective, shiny look. 
+        </p>
+        <br>
+        <p><b>
+            Show two images of scene `CBbunny_microfacet_cu.dae` rendered using cosine hemisphere sampling (default) and your importance sampling. The sampling rate should be fixed at 64 samples per pixel and 1 samples per light. The number of bounces should be at least 5. Briefly discuss their difference.
+        </b></p>
+    <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/CBbunny_microfacet_cos_hem.png" align="middle" width="350px"/>
+        <figcaption>Cosine Hemisphere Sampling</figcaption>
+      </td>
+      <td>
+        <img src="images/CBbunny_microfacet_importance.png" align="middle" width="350px"/>
+        <figcaption>Importance Sampling</figcaption>
+      </td>
+    </tr>
+  </table>
+        <p>
+           All our images above were made with a command using 64 samples per pixel, 1 sample per light, and 5 bounces.
+        </p>
+        <p>
+            We can see a pretty substantial difference in the apperance of our bunny using cosine hemisphere sampling vs importance sampling. For one, we can see a large amount of noise when we use cosine hemisphere sampling, and even see a lack of convergence with the Beckmann distribution implemented in earlier parts. This can be shown by the black, noisy image of the bunny. The black spots on the bunny for Cosine Hemisphere sampling are so prominent, that it doesn't even seem to look like the bunny is copper. The bunny made using importance sampling, though still slightly noisy in the background, is much clearer and shows the actual copper material of the bunny much better. This is because the importance sampling method works better for sampling the Beckmann distribution than cosine hemisphere sampling. Overall, in terms of quality, ability to distiguish our material, noise, and overall look of the bunny, the importance sampling image represents a step up.
+        </p>
+        <br>
+        <p><b>
+            Show at least one image with some other conductor material, replacing `eta` and `k`. Note that you should look up values for real data rather than modifying them arbitrarily. Tell us what kind of material your parameters correspond to. 
+        </b></p>
+        <tr align="center">
+      <td>
+        <center>
+        <img src="images/CBbunny_microfacet_silicon.png" align="middle" width="350px"/>
+        <figcaption>Silicon Bunny</figcaption>
+    </center>
+      </td>
+      <td>
+        <p>
+            Above we have our copper bunny with eta and k values cooresponding to the conductor of silicon. At the various wavelengths 614 nm (red), 549 nm (green) and 466 nm (blue), our eta values were 3.9186, 4.0903, and 4.5288, and our k values were 0.023600, 0.041535, and 0.11463. Because silicon is a dark grey color, you can see that our bunny is much more dark than that of the copper bunny we had initially.
+        </p>
+        <br>
+        
+        
+        
+
+        <h3 align="middle">Part 3. Environment Lightl</h3>
+        <b>Pick one *.exr* file to use for all subparts here. Include a converted *.jpg* of it in your website so we know what map you are using.</b>
+        
+        <p><b>
+            In a few sentences, explain the ideas behind environment lighting (i.e. why we do it/how it works).
+        </b></p>
+        <p>
+            Your response goes here.
+        </p>
+        <br>
+        <p><b>
+            Show the *probability_debug.png* file for the *.exr* file you are using, generated using the `save_probability_debug()` helper function after initializing your probability distributions.
+        </b></p>
+        <p>
+            Your response goes here.
+        </p>
+        <br>
+        <p><b>
+            Use the `bunny_unlit.dae` scene and your environment map *.exr* file and render two pictures, one with uniform sampling and one with importance sampling. Use 4 samples per pixel and 64 samples per light in each. Compare noise levels. Make sure to include all screenshots.
+        </b></p>
+        <p>
+            Your response goes here.
+        </p>
+        <br>
+        <p><b>
+            Use a different image (if you did part 2, we recommend `bunny_microfacet_cu_unlit.dae`) and your environment map *.exr* file and render two pictures, one with uniform sampling and one with importance sampling. Use 4 samples per pixel and 64 samples per light in each. Compare noise levels. Make sure to include all screenshots.
+        </b></p>
+        <p>
+            Your response goes here.
+        </p>
+        <br>
+
+
+
+        <h3 align="middle">Part 4. Depth of Field</h3>
+        <b>
+            For these subparts, we recommend using a microfacet BSDF scene to show off the cool out of focus effects you can get with depth of field!
+        </b>
+        <p><b>
+            In a few sentences, explain the differences between a pinhole camera model and a thin-lens camera model. 
+        </b></p>
+        <p>
+            Your response goes here.
+        </p>
+        <br>
+        <p><b>
+            Show a "focus stack" where you focus at 4 visibly different depths through a scene. Make sure to include all screenshots.
+        </b></p>
+        <p>
+            Your response goes here.
+        </p>
+        <br>
+        <p><b>
+            Show a sequence of 4 pictures with visibly different aperture sizes, all focused at the same point in a scene. Make sure to include all screenshots.
+        </b></p>
+        <p>
+            Your response goes here.
+        </p>
+        <br>
+
+    </div>
+</body>
 </html>
+
